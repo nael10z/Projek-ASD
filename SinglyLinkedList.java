@@ -79,7 +79,7 @@ public class SinglyLinkedList implements LinkedList{
         }
         else{
             Node temp = head;
-            for(int i=1;i<size;i++){
+            for(int i=1;i<size-1;i++){//berhenti di node sebelum tail
                 temp = temp.pointer;
             }
             tail = temp;
@@ -116,27 +116,58 @@ public class SinglyLinkedList implements LinkedList{
     }
     @Override
     public Object get(int index) {
-        // TODO digunakan untuk mengembalikan data pada index ke-i dimulai dari head. Head memiliki index 0
-        return null;
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+        Node temp = head;
+        for(int i=0;i<index;i++){
+            temp = temp.pointer;
+        }
+        return temp.data;
     }
     @Override
     public int indexOf(Object targetData) {
-        // TODO digunakan mencari kemunculan pertama targetData pada linked list dan mengembalikan indeksnya. Indeks dari head adalah 0. Jika tidak ada targetData pada linked list, kembalikan nilai -1 
-        return 0;
+        Node temp = head;
+        for(int i=0;i<size;i++){
+            if(temp.data.equals(targetData)){
+                return i;
+            }
+            temp = temp.pointer;
+        }
+        return -1;
     }
     @Override
     public void printReverse() {
-        // TODO digunakan untuk mencetak data pada linked list dengan urutan terbalik, dari tail ke head.
-        
+        Object[] data = toArray();
+        for(int i=data.length-1;i>=0;i--){
+            System.out.println(data[i]);
+        }
     }
     @Override
     public boolean remove(Object targetData) {
-        // TODO digunakan untuk mencari dan menghapus node dengan data=targetData pada linked list serta mengembalikan nilai True jika berhasil, dan False jika targetData tidak ada di linkedList
-        return false;
+        int index = indexOf(targetData);
+        if(index == -1){
+            return false;
+        }
+        if(index == 0){
+            deleteFirst();
+        }
+        else if(index == size-1){
+            deleteLast();
+        }
+        else{
+            deleteAfter(index-1);
+        }
+        return true;
     }
     @Override
     public Object[] toArray() {
-        // TODO digunakan untuk mendapatkan keseluruhan data pada node-node di linked list dalam bentuk array. Data-data pada array disusun secara urut mulai dari head sampai dengan tail.
-        return null;
+        Object[] hasil = new Object[size];
+        Node temp = head;
+        for(int i=0;i<size;i++){
+            hasil[i] = temp.data;
+            temp = temp.pointer;
+        }
+        return hasil;
     }
 }
